@@ -4,13 +4,23 @@ import express from "express";
 
 // Import routes
 import movieRoutes from "./routes/movieRoutes.js";
+import authRoutes from "./routes/authRouts.js";
+
 import { config } from "dotenv";
 config();
 connectDB();
 
 // Create Express app
 const app = express();
+
+// Body parsing middleware
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+
 app.use("/movies", movieRoutes);
+app.use("/auth", authRoutes);
 
 const PORT = process.env.PORT || 5001;
 const server = app.listen(PORT, () => {
