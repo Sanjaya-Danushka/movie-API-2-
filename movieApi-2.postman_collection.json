@@ -1,0 +1,228 @@
+{
+  "info": {
+    "_postman_id": "aed75216-e620-4a76-adf7-67de5b351ca5",
+    "name": "movieApi-2",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "48219320",
+    "_collection_link": "https://go.postman.co/collection/48219320-aed75216-e620-4a76-adf7-67de5b351ca5?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "regiter-user",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"dev\",\n    \"email\":\"dev@gmail.com\",\n    \"password\":\"user123\"\n\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5001/auth/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5001",
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login-user",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\":\"dev@gmail.com\",\n    \"password\":\"user123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5001/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5001",
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "logout-user",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5001/auth/logout",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5001",
+              "path": [
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "watchlist",
+      "item": [
+        {
+          "name": "add movie to watchlist",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE0MjM0M2Y0LTg5YjEtNGUxMy1iZDhjLTZjNzMwNzRmYzQwNiIsImlhdCI6MTc3MDk2Mjg3NCwiZXhwIjoxNzcxNTY3Njc0fQ.cJ_5x4apQL-3MmOWrV__MlQgY9FptkRz5l9r4ArbyqE",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"movieId\": \"65d57b25-fc4f-48ba-a9b6-a6314c888c61\",\n    \"status\": \"PLANNED\",\n    \"rating\": 9\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5001/watchlist",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5001",
+              "path": [
+                "watchlist"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete movie to watchlist",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE0MjM0M2Y0LTg5YjEtNGUxMy1iZDhjLTZjNzMwNzRmYzQwNiIsImlhdCI6MTc3MDk2Mjg3NCwiZXhwIjoxNzcxNTY3Njc0fQ.cJ_5x4apQL-3MmOWrV__MlQgY9FptkRz5l9r4ArbyqE",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5001/watchlist/54e7cdd9-272b-4198-85b4-f1c1300b01fd",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5001",
+              "path": [
+                "watchlist",
+                "54e7cdd9-272b-4198-85b4-f1c1300b01fd"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update movie to watchlist",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE0MjM0M2Y0LTg5YjEtNGUxMy1iZDhjLTZjNzMwNzRmYzQwNiIsImlhdCI6MTc3MDk2Mjg3NCwiZXhwIjoxNzcxNTY3Njc0fQ.cJ_5x4apQL-3MmOWrV__MlQgY9FptkRz5l9r4ArbyqE",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"movieId\": \"65d57b25-fc4f-48ba-a9b6-a6314c888c61\",\n    \"userId\": \"a42343f4-89b1-4e13-bd8c-6c73074fc406\",\n    \"status\": \"PLANNED\",\n    \"rating\": 9\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5001/watchlist",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5001",
+              "path": [
+                "watchlist"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "test connectio",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\":\"dsanjaya713@gmail.com\",\n    \"password\":\"user123\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5001/movies",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5001",
+          "path": [
+            "movies"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

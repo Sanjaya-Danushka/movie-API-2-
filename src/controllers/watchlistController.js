@@ -65,4 +65,41 @@ const deleteFromWatchlist = async (req, res) => {
   });
 };
 
-export { addToWatchlist, deleteFromWatchlist };
+const updateWatchlist = async (req, res) => {
+  const { id } = req.params;
+  const { status, rating, notes } = req.body;
+  const userId = req.user.id; // Assuming authMiddleware sets req.user.id
+  
+  const prisma = await getPrismaClient();
+
+  // Find the watchlist item
+  const watchlistItem = await prisma.watchlistItem.findUnique({
+    where: { id },
+  });
+
+  if (!watchlistItem) {
+    return res.status(404).json({ error: "Watchlist item not found" });
+  }
+
+  // Check if the item belongs to the user
+  if (watchlistItem.userId !== userId) {
+    return res.status(403).json({ error: "Not authorized to update this item" });
+  }
+
+  // Update the watchlist item
+  const updatedItem = await prisma.watchlistItem.update({
+    where: { id },
+    data: {
+      status: status !== undefined ? status : watchlistItem.status,
+      rating: rating !== undefined ? rating : watchlistItem.rating,
+      notes: notes !== undefined ? notes : watchlistItem.notes,
+    },
+  });
+
+  res.status(200).json({ 
+    status: "success", 
+    data: updatedItem 
+  });
+};
+
+export { addToWatchlist, deleteFromWatchlist, updateWatchlist };
