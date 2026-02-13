@@ -1,4 +1,4 @@
-// import { Prisma } from "@prisma/client";
+import { generateToken } from "../utils/generateToken.js";
 import { error } from "node:console";
 import { getPrismaClient } from "../config/db.js";
 import bcrypt from "bcryptjs";
@@ -30,6 +30,7 @@ const register = async (req, res) => {
       password: hashedPassword,
     },
   });
+  const token = generateToken(user.id, res);
 
   res.status(201).json({
     status: "success",
@@ -39,6 +40,7 @@ const register = async (req, res) => {
         name: user.name,
         email: user.email,
       },
+      token,
     },
   });
 };
@@ -64,6 +66,9 @@ const login = async (req, res) => {
     return res.status(400).json({ error: "Password is incorrect" });
   }
 
+  // Generate JWT Token
+  const token = generateToken(userExists.id, res);
+
   res.status(201).json({
     status: "success",
     data: {
@@ -72,8 +77,21 @@ const login = async (req, res) => {
         name: userExists.name,
         email: userExists.email,
       },
+      token,
     },
   });
 };
 
-export { register, login };
+const logout = async (req, res) => {
+  res.cookie("jwt", "", {
+    httpOnly: true,
+    // secure: process.env.NODE_ENV === "production",
+    // sameSite: "strict",
+    expires: new Date(0),
+  })
+  res.status(200).json({ status: "success",
+    message: "User logged out successfully" 
+   });
+};
+
+export { register, login, logout };

@@ -1,10 +1,11 @@
 import "dotenv/config";
-import { connectDB } from "./config/db.js";
+import { connectDB, disconnectDB } from "./config/db.js";
 import express from "express";
 
 // Import routes
 import movieRoutes from "./routes/movieRoutes.js";
 import authRoutes from "./routes/authRouts.js";
+import watchlistRoutes from "./routes/watchlistRoute.js";
 
 import { config } from "dotenv";
 config();
@@ -18,9 +19,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
 app.use("/movies", movieRoutes);
 app.use("/auth", authRoutes);
+app.use("/watchlist", watchlistRoutes);
 
 const PORT = process.env.PORT || 5001;
 const server = app.listen(PORT, () => {
