@@ -64,7 +64,7 @@ const login = async (req, res) => {
     return res.status(400).json({ error: "Password is incorrect" });
   }
 
-  res.status(200).json({
+  res.status(201).json({
     status: "success",
     data: {
       user: {
