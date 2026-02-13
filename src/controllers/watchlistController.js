@@ -2,7 +2,8 @@ import { getPrismaClient } from "../config/db.js";
 
 const addToWatchlist = async (req, res) => {
   const { movieId, status, rating, notes } = req.body;
-
+  const userId = req.user.id; // Get userId from authenticated user
+  
   const prisma = await getPrismaClient();
 
   // verify movie exists
