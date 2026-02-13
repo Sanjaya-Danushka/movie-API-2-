@@ -1,23 +1,24 @@
 {
   "info": {
     "_postman_id": "aed75216-e620-4a76-adf7-67de5b351ca5",
-    "name": "movieApi-2",
+    "name": "movieApi-2 - Enhanced",
+    "description": "Complete Movie API with search, filtering, ratings, reviews, recommendations, and TMDB integration",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "48219320",
     "_collection_link": "https://go.postman.co/collection/48219320-aed75216-e620-4a76-adf7-67de5b351ca5?source=collection_link"
   },
   "item": [
     {
-      "name": "user",
+      "name": "Authentication",
       "item": [
         {
-          "name": "regiter-user",
+          "name": "Register User",
           "request": {
             "method": "POST",
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"dev\",\n    \"email\":\"dev@gmail.com\",\n    \"password\":\"user123\"\n\n}",
+              "raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -40,13 +41,13 @@
           "response": []
         },
         {
-          "name": "login-user",
+          "name": "Login User",
           "request": {
             "method": "POST",
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"email\":\"dev@gmail.com\",\n    \"password\":\"user123\"\n}",
+              "raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -67,22 +68,306 @@
             }
           },
           "response": []
-        },
+        }
+      ]
+    },
+    {
+      "name": "Movies",
+      "item": [
         {
-          "name": "logout-user",
+          "name": "Get All Movies (Advanced filtering)",
           "request": {
-            "method": "POST",
+            "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:5001/auth/logout",
+              "raw": "http://localhost:5001/movies?search=inception&genre=Action&year=2010&minRating=7&page=1&limit=20&sortBy=averageRating&sortOrder=desc",
               "protocol": "http",
               "host": [
                 "localhost"
               ],
               "port": "5001",
               "path": [
-                "auth",
-                "logout"
+                "movies"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "inception"
+                },
+                {
+                  "key": "genre",
+                  "value": "Action"
+                },
+                {
+                  "key": "year",
+                  "value": "2010"
+                },
+                {
+                  "key": "minRating",
+                  "value": "7"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "averageRating"
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "desc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Movie by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5001/movies/{{movieId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5001",
+              "path": [
+                "movies",
+                "{{movieId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Search Movies (TMDB)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5001/movies/search/tmdb?query=inception&page=1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5001",
+              "path": [
+                "movies",
+                "search",
+                "tmdb"
+              ],
+              "query": [
+                {
+                  "key": "query",
+                  "value": "inception"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Popular Movies (TMDB)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5001/movies/popular/tmdb?page=1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5001",
+              "path": [
+                "movies",
+                "popular",
+                "tmdb"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Genres (TMDB)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5001/movies/genres/tmdb",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5001",
+              "path": [
+                "movies",
+                "genres",
+                "tmdb"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Import Movie from TMDB",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"tmdbId\": 27205\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5001/movies/import/tmdb",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5001",
+              "path": [
+                "movies",
+                "import",
+                "tmdb"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Movie (with images)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "My Awesome Movie",
+                  "type": "text"
+                },
+                {
+                  "key": "overview",
+                  "value": "An amazing movie about...",
+                  "type": "text"
+                },
+                {
+                  "key": "releaseYear",
+                  "value": "2023",
+                  "type": "text"
+                },
+                {
+                  "key": "genres",
+                  "value": "[\"Action\", \"Drama\"]",
+                  "type": "text"
+                },
+                {
+                  "key": "runtime",
+                  "value": "120",
+                  "type": "text"
+                },
+                {
+                  "key": "poster",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "backdrop",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5001/movies",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5001",
+              "path": [
+                "movies"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Movie (with images)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Updated Movie Title",
+                  "type": "text"
+                },
+                {
+                  "key": "overview",
+                  "value": "Updated movie description",
+                  "type": "text"
+                },
+                {
+                  "key": "poster",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5001/movies/{{movieId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5001",
+              "path": [
+                "movies",
+                "{{movieId}}"
               ]
             }
           },
@@ -91,22 +376,182 @@
       ]
     },
     {
-      "name": "watchlist",
+      "name": "Reviews",
       "item": [
         {
-          "name": "add movie to watchlist",
+          "name": "Create/Update Review",
           "request": {
             "method": "POST",
             "header": [
               {
                 "key": "Authorization",
-                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE0MjM0M2Y0LTg5YjEtNGUxMy1iZDhjLTZjNzMwNzRmYzQwNiIsImlhdCI6MTc3MDk2Mjg3NCwiZXhwIjoxNzcxNTY3Njc0fQ.cJ_5x4apQL-3MmOWrV__MlQgY9FptkRz5l9r4ArbyqE",
+                "value": "Bearer {{jwtToken}}",
                 "type": "text"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"movieId\": \"65d57b25-fc4f-48ba-a9b6-a6314c888c61\",\n    \"status\": \"PLANNED\",\n    \"rating\": 9\n}",
+              "raw": "{\n    \"movieId\": \"{{movieId}}\",\n    \"rating\": 8,\n    \"content\": \"Great movie! Highly recommended.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5001/reviews",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5001",
+              "path": [
+                "reviews"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Movie Reviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5001/reviews/movie/{{movieId}}?page=1&limit=10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5001",
+              "path": [
+                "reviews",
+                "movie",
+                "{{movieId}}"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User's Reviews",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5001/reviews/user?page=1&limit=10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5001",
+              "path": [
+                "reviews",
+                "user"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User's Rating for Movie",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5001/reviews/user/movie/{{movieId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5001",
+              "path": [
+                "reviews",
+                "user",
+                "movie",
+                "{{movieId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Review",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5001/reviews/{{reviewId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5001",
+              "path": [
+                "reviews",
+                "{{reviewId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Watchlist",
+      "item": [
+        {
+          "name": "Add to Watchlist",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"movieId\": \"{{movieId}}\",\n    \"status\": \"PLANNED\",\n    \"rating\": 9,\n    \"notes\": \"Looking forward to watching this!\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -128,19 +573,19 @@
           "response": []
         },
         {
-          "name": "delete movie to watchlist",
+          "name": "Update Watchlist Item",
           "request": {
-            "method": "DELETE",
+            "method": "PUT",
             "header": [
               {
                 "key": "Authorization",
-                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE0MjM0M2Y0LTg5YjEtNGUxMy1iZDhjLTZjNzMwNzRmYzQwNiIsImlhdCI6MTc3MDk2Mjg3NCwiZXhwIjoxNzcxNTY3Njc0fQ.cJ_5x4apQL-3MmOWrV__MlQgY9FptkRz5l9r4ArbyqE",
+                "value": "Bearer {{jwtToken}}",
                 "type": "text"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "",
+              "raw": "{\n    \"status\": \"COMPLETED\",\n    \"rating\": 8,\n    \"notes\": \"Great movie! Amazing cinematography.\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -148,7 +593,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:5001/watchlist/54e7cdd9-272b-4198-85b4-f1c1300b01fd",
+              "raw": "http://localhost:5001/watchlist/{{watchlistItemId}}",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -156,41 +601,33 @@
               "port": "5001",
               "path": [
                 "watchlist",
-                "54e7cdd9-272b-4198-85b4-f1c1300b01fd"
+                "{{watchlistItemId}}"
               ]
             }
           },
           "response": []
         },
         {
-          "name": "update movie to watchlist",
+          "name": "Delete from Watchlist",
           "request": {
-            "method": "PUT",
+            "method": "DELETE",
             "header": [
               {
                 "key": "Authorization",
-                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE0MjM0M2Y0LTg5YjEtNGUxMy1iZDhjLTZjNzMwNzRmYzQwNiIsImlhdCI6MTc3MDk2Mjg3NCwiZXhwIjoxNzcxNTY3Njc0fQ.cJ_5x4apQL-3MmOWrV__MlQgY9FptkRz5l9r4ArbyqE",
+                "value": "Bearer {{jwtToken}}",
                 "type": "text"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"movieId\": \"65d57b25-fc4f-48ba-a9b6-a6314c888c61\",\n    \"userId\": \"a42343f4-89b1-4e13-bd8c-6c73074fc406\",\n    \"status\": \"PLANNED\",\n    \"rating\": 9\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
             "url": {
-              "raw": "http://localhost:5001/watchlist",
+              "raw": "http://localhost:5001/watchlist/{{watchlistItemId}}",
               "protocol": "http",
               "host": [
                 "localhost"
               ],
               "port": "5001",
               "path": [
-                "watchlist"
+                "watchlist",
+                "{{watchlistItemId}}"
               ]
             }
           },
@@ -199,30 +636,204 @@
       ]
     },
     {
-      "name": "test connectio",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
-      "request": {
-        "method": "GET",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n    \"email\":\"dsanjaya713@gmail.com\",\n    \"password\":\"user123\"\n}"
+      "name": "Recommendations",
+      "item": [
+        {
+          "name": "Get Personalized Recommendations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5001/recommendations/personalized?limit=10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5001",
+              "path": [
+                "recommendations",
+                "personalized"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
         },
-        "url": {
-          "raw": "http://localhost:5001/movies",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "5001",
-          "path": [
-            "movies"
-          ]
+        {
+          "name": "Get Similar Movies",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5001/recommendations/similar/{{movieId}}?limit=10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5001",
+              "path": [
+                "recommendations",
+                "similar",
+                "{{movieId}}"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Trending Movies",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5001/recommendations/trending?limit=10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5001",
+              "path": [
+                "recommendations",
+                "trending"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Preferences",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5001/recommendations/preferences",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5001",
+              "path": [
+                "recommendations",
+                "preferences"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Set User Preferences",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"favoriteGenres\": [\"Action\", \"Sci-Fi\", \"Drama\"],\n    \"preferredYears\": [2010, 2015, 2020],\n    \"minRating\": 7,\n    \"maxRuntime\": 180\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5001/recommendations/preferences",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5001",
+              "path": [
+                "recommendations",
+                "preferences"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Preferences (Auto)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5001/recommendations/preferences/update",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5001",
+              "path": [
+                "recommendations",
+                "preferences",
+                "update"
+              ]
+            }
+          },
+          "response": []
         }
-      },
-      "response": []
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "jwtToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "movieId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "reviewId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "watchlistItemId",
+      "value": "",
+      "type": "string"
     }
   ]
 }

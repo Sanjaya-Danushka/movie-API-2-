@@ -16,7 +16,7 @@ const main = async () => {
       releaseYear: 2010,
       genres: ["Sci-Fi", "Action", "Thriller"],
       runtime: 148,
-      posteUrl: "https://example.com/inception.jpg",
+      posterUrl: "https://example.com/inception.jpg",
       createdBy: userId,
     },
     {
@@ -25,7 +25,7 @@ const main = async () => {
       releaseYear: 2008,
       genres: ["Action", "Crime", "Drama"],
       runtime: 152,
-      posteUrl: "https://example.com/darkknight.jpg",
+      posterUrl: "https://example.com/darkknight.jpg",
       createdBy: userId,
     },
     {
@@ -34,7 +34,7 @@ const main = async () => {
       releaseYear: 2014,
       genres: ["Sci-Fi", "Adventure", "Drama"],
       runtime: 169,
-      posteUrl: "https://example.com/interstellar.jpg",
+      posterUrl: "https://example.com/interstellar.jpg",
       createdBy: userId,
     },
     {
@@ -43,7 +43,7 @@ const main = async () => {
       releaseYear: 1994,
       genres: ["Drama"],
       runtime: 142,
-      posteUrl: "https://example.com/shawshank.jpg",
+      posterUrl: "https://example.com/shawshank.jpg",
       createdBy: userId,
     },
     {
@@ -52,7 +52,7 @@ const main = async () => {
       releaseYear: 2019,
       genres: ["Action", "Adventure", "Sci-Fi"],
       runtime: 181,
-      posteUrl: "https://example.com/endgame.jpg",
+      posterUrl: "https://example.com/endgame.jpg",
       createdBy: userId,
     },
     {
@@ -61,7 +61,7 @@ const main = async () => {
       releaseYear: 1994,
       genres: ["Crime", "Drama"],
       runtime: 154,
-      posteUrl: "https://example.com/pulpfiction.jpg",
+      posterUrl: "https://example.com/pulpfiction.jpg",
       createdBy: userId,
     },
     {
@@ -70,7 +70,7 @@ const main = async () => {
       releaseYear: 1994,
       genres: ["Drama", "Romance"],
       runtime: 142,
-      posteUrl: "https://example.com/forrestgump.jpg",
+      posterUrl: "https://example.com/forrestgump.jpg",
       createdBy: userId,
     },
     {
@@ -79,7 +79,7 @@ const main = async () => {
       releaseYear: 1999,
       genres: ["Action", "Sci-Fi"],
       runtime: 136,
-      posteUrl: "https://example.com/matrix.jpg",
+      posterUrl: "https://example.com/matrix.jpg",
       createdBy: userId,
     },
     {
@@ -88,7 +88,7 @@ const main = async () => {
       releaseYear: 2001,
       genres: ["Adventure", "Fantasy"],
       runtime: 178,
-      posteUrl: "https://example.com/lotr1.jpg",
+      posterUrl: "https://example.com/lotr1.jpg",
       createdBy: userId,
     },
     {
@@ -97,7 +97,7 @@ const main = async () => {
       releaseYear: 2019,
       genres: ["Comedy", "Drama", "Thriller"],
       runtime: 132,
-      posteUrl: "https://example.com/parasite.jpg",
+      posterUrl: "https://example.com/parasite.jpg",
       createdBy: userId,
     },
   ];

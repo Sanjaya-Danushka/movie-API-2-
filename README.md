@@ -1,18 +1,28 @@
-# Movie API
+# Movie API - Enhanced
 
-This is a RESTful API for managing a movie watchlist. Users can register, login, and manage their watchlist by adding, updating, and deleting movies.
+A comprehensive RESTful API for movie management with advanced features including TMDB integration, personalized recommendations, ratings & reviews, and image uploads.
 
 ## Features
 
-- User authentication (registration, login, logout) with JWT.
-- Browse a list of movies.
-- Manage a personal watchlist of movies.
+- **User Authentication** - JWT-based registration, login, and logout
+- **Advanced Movie Search & Filtering** - By title, genre, year, rating with pagination
+- **TMDB Integration** - Real movie data, search, popular movies, and import functionality
+- **Ratings & Reviews System** - 1-10 star ratings with text reviews and average calculations
+- **Image Upload System** - Poster and backdrop uploads with validation
+- **Personalized Recommendations** - AI-powered movie suggestions based on user preferences
+- **Watchlist Management** - Add, update, and organize movies to watch
+- **Comprehensive API Documentation** - Detailed endpoint specifications
 
 ## Tech Stack
 
 - **Backend:** Node.js, Express.js
-- **Database:** PostgreSQL (can be hosted on [Neon](https://console.neon.tech/))
+- **Database:** PostgreSQL (hosted on [Neon](https://console.neon.tech/))
 - **ORM:** Prisma
+- **Authentication:** JWT with HTTP-only cookies
+- **File Uploads:** Multer with image validation
+- **External APIs:** Axios for TMDB integration
+- **Testing:** Jest, Supertest
+- **Development:** Nodemon, Babel
 
 ## Getting Started
 
@@ -20,97 +30,173 @@ This is a RESTful API for managing a movie watchlist. Users can register, login,
 
 - [Node.js](https://nodejs.org/en/) (v14 or later)
 - [npm](https://www.npmjs.com/)
-- A PostgreSQL database. You can create a free one at [Neon](https://console.neon.tech/).
+- PostgreSQL database ([Neon](https://console.neon.tech/) recommended)
 
 ### Installation
 
-1. Clone the repository:
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd backend
+   ```
 
-    ```bash
-    git clone <repository-url>
-    ```
-
-2. Navigate to the project directory:
-
-    ```bash
-    cd backend
-    ```
-
-3. Install the dependencies:
-
-    ```bash
-    npm install
-    ```
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
 ### Environment Variables
 
-Create a `.env` file in the root of the project and add the following environment variables. You can use the `.env.example` file as a template.
+Create a `.env` file using `.env.example` as template:
 
-```
+```bash
+# Database
 DATABASE_URL="your-postgresql-connection-string"
+
+# Server
 PORT=5001
+NODE_ENV=development
+
+# Authentication
 JWT_SECRET="your-jwt-secret"
 JWT_EXPIRES_IN="7d"
 JWT_COOKIE_EXPIRES_IN="7"
+
+# TMDB API (required for TMDB features)
+TMDB_API_KEY="your-tmdb-api-key-here"
 ```
 
-- `DATABASE_URL`: The connection string for your PostgreSQL database. If you are using Neon, you can find this in your Neon project dashboard.
-- `PORT`: The port the server will run on.
-- `JWT_SECRET`: A secret key for signing JWTs.
-- `JWT_EXPIRES_IN`: The expiration time for JWTs (e.g., "7d", "24h").
-- `JWT_COOKIE_EXPIRES_IN`: The expiration time for the JWT cookie in days.
+**Important:** Get your TMDB API key from [TMDB Settings](https://www.themoviedb.org/settings/api) after creating an account.
 
-### Database Migration
+### Database Setup
 
-Run the following command to apply the database migrations:
+1. **Run migrations:**
+   ```bash
+   npx prisma migrate dev
+   ```
 
-```bash
-npx prisma migrate dev
-```
-
-### Seed the Database
-
-Run the following command to seed the database with some initial movie data:
-
-```bash
-npx prisma db seed
-```
+2. **Seed the database:**
+   ```bash
+   npx prisma db seed
+   ```
 
 ### Running the Application
 
-To start the server, run the following command:
+**Development mode:**
+```bash
+npm run dev
+```
 
+**Production mode:**
 ```bash
 npm start
 ```
 
-The server will be running on `http://localhost:5001`.
+Server runs on `http://localhost:5001`
 
 ## API Endpoints
 
 ### Authentication
-
-- `POST /auth/register` - Register a new user.
-  - **Body:** `{ "name": "John Doe", "email": "john.doe@example.com", "password": "password123" }`
-- `POST /auth/login` - Login a user.
-  - **Body:** `{ "email": "john.doe@example.com", "password": "password123" }`
-- `POST /auth/logout` - Logout a user.
+- `POST /auth/register` - Register new user
+- `POST /auth/login` - Login user (returns JWT token)
+- `POST /auth/logout` - Logout user
 
 ### Movies
+- `GET /movies` - Advanced filtering with search, genre, year, rating
+- `GET /movies/:id` - Get movie by ID
+- `GET /movies/search/tmdb` - Search TMDB movies
+- `GET /movies/popular/tmdb` - Get popular movies from TMDB
+- `GET /movies/genres/tmdb` - Get movie genres from TMDB
+- `POST /movies/import/tmdb` - Import movie from TMDB
+- `POST /movies` - Create movie with image uploads
+- `PUT /movies/:id` - Update movie with image uploads
 
-- `GET /movies` - Get a list of all movies.
+### Reviews
+- `POST /reviews` - Create/update review and rating
+- `GET /reviews/movie/:id` - Get all reviews for a movie
+- `GET /reviews/user` - Get user's review history
+- `GET /reviews/user/movie/:id` - Check user's rating for movie
+- `DELETE /reviews/:id` - Delete user's review
 
 ### Watchlist
+- `POST /watchlist` - Add movie to watchlist
+- `PUT /watchlist/:id` - Update watchlist item
+- `DELETE /watchlist/:id` - Remove from watchlist
 
-- `POST /watchlist` - Add a movie to the watchlist.
-  - **Headers:** `Authorization: Bearer <jwt-token>`
-  - **Body:** `{ "movieId": "movie-id", "status": "PLANNED|WATCHING|COMPLETED", "rating": 9 }`
-- `DELETE /watchlist/:id` - Remove a movie from the watchlist.
-  - **Headers:** `Authorization: Bearer <jwt-token>`
-- `PUT /watchlist/:id` - Update a movie in the watchlist.
-  - **Headers:** `Authorization: Bearer <jwt-token>`
-  - **Body:** `{ "status": "COMPLETED", "rating": 10 }`
+### Recommendations
+- `GET /recommendations/personalized` - Personalized movie suggestions
+- `GET /recommendations/similar/:id` - Similar movies to given movie
+- `GET /recommendations/trending` - Currently trending movies
+- `GET /recommendations/preferences` - Get user preferences
+- `POST /recommendations/preferences` - Set user preferences
+- `POST /recommendations/preferences/update` - Auto-update preferences
 
-## Postman Collection
+## Testing
 
-You can use the `movieApi-2.postman_collection.json` file to test the API with [Postman](https://www.postman.com/).
+**Run all tests:**
+```bash
+npm test
+```
+
+**Run with coverage:**
+```bash
+npm run test:coverage
+```
+
+**API integration tests:**
+```bash
+npm run test:api
+```
+
+## Documentation
+
+- **Detailed API Documentation:** See `API_DOCUMENTATION.md`
+- **Postman Collection:** Import `movieApi-2.postman_collection.json`
+
+## Project Structure
+
+```
+backend/
+├── src/
+│   ├── controllers/     # Route handlers
+│   ├── routes/         # API route definitions
+│   ├── services/       # Business logic & external APIs
+│   ├── middleware/     # Authentication & validation
+│   ├── config/         # Database configuration
+│   └── utils/          # Helper functions
+├── prisma/
+│   ├── schema.prisma   # Database schema
+│   └── seed.js         # Database seeding
+├── tests/              # Unit & integration tests
+├── uploads/            # Uploaded images directory
+└── API_DOCUMENTATION.md
+```
+
+## Available Scripts
+
+- `npm start` - Start production server
+- `npm run dev` - Start development server with hot reload
+- `npm test` - Run all tests
+- `npm run test:coverage` - Run tests with coverage report
+- `npm run test:api` - Run API integration tests
+- `npm run prisma:studio` - Open Prisma Studio
+
+## Deployment
+
+The API is ready for deployment to platforms like:
+- **Vercel** - For serverless deployment
+- **Heroku** - Traditional hosting
+- **Railway** - Modern app hosting
+- **AWS/GCP/Azure** - Cloud platforms
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License.

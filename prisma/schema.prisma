@@ -18,22 +18,68 @@ model User {
   name      String
   email     String          @unique
   password  String
-  watchlist watchlistItem[] // <-- add this
+  watchlist watchlistItem[]
+  reviews   Review[]
+  preferences UserPreferences?
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Movie {
-  id         String          @id @default(uuid())
-  title      String
-  overview   String?
-  releaseYear Int
-  genres     String[]        @default([])
-  runtime    Int?
-  posteUrl   String?
-  createdBy  String?
-  watchlist  watchlistItem[] // <-- add this
-  createdAt  DateTime @default(now())
+  id           String          @id @default(uuid())
+  title        String
+  overview     String?
+  releaseYear  Int
+  genres       String[]        @default([])
+  runtime      Int?
+  posterUrl    String?         // Fixed typo from posteUrl
+  backdropUrl  String?         // For background images
+  tmdbId       Int?            @unique // TMDB movie ID
+  imdbId       String?         // IMDB ID
+  averageRating Float?         @default(0.0) // Average user rating
+  ratingCount  Int             @default(0)  // Number of ratings
+  popularity   Float?          @default(0.0) // TMDB popularity score
+  createdBy    String?
+  watchlist    watchlistItem[]
+  reviews      Review[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([releaseYear])
+  @@index([genres])
+  @@index([averageRating])
+  @@index([tmdbId])
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  userId    String
+  movieId   String
+  rating    Int      // 1-10 rating
+  content   String?  // Review text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  movie     Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, movieId])
+}
+
+model UserPreferences {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  favoriteGenres String[] @default([])
+  preferredYears Int[]    @default([])
+  minRating     Int      @default(1)  // Minimum rating preference
+  maxRuntime    Int?     // Maximum movie runtime preference
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relation
+  user          User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model watchlistItem {

@@ -1,20 +1,45 @@
 import express from "express";
+import { authMiddleware } from "../middleware/authMiddleware.js";
+import { uploadMultiple } from "../services/uploadService.js";
+import {
+  getAllMovies,
+  getMovieById,
+  searchMovies,
+  getPopularMovies,
+  getMoviesByGenre,
+  getGenres,
+  importMovieFromTMDB,
+  createMovie,
+  updateMovie
+} from "../controllers/movieController.js";
+
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.json({ httpMethod: "GET" });
-});
+// Get all movies with filtering and search
+router.get("/", getAllMovies);
 
-router.post("/", (req, res) => {
-  res.json({ httpMethod: "POST" });
-});
+// Get movie by ID
+router.get("/:id", getMovieById);
 
-router.put("/", (req, res) => {
-  res.json({ httpMethod: "PUT" });
-});
+// Search movies from TMDB
+router.get("/search/tmdb", searchMovies);
 
-router.delete("/", (req, res) => {
-  res.json({ httpMethod: "DELETE" });
-});
+// Get popular movies from TMDB
+router.get("/popular/tmdb", getPopularMovies);
+
+// Get movies by genre from TMDB
+router.get("/genre/:genreId/tmdb", getMoviesByGenre);
+
+// Get genres from TMDB
+router.get("/genres/tmdb", getGenres);
+
+// Import movie from TMDB (protected)
+router.post("/import/tmdb", authMiddleware, importMovieFromTMDB);
+
+// Create movie with image uploads (protected)
+router.post("/", authMiddleware, uploadMultiple('images', 2), createMovie);
+
+// Update movie with image uploads (protected)
+router.put("/:id", authMiddleware, uploadMultiple('images', 2), updateMovie);
 
 export default router;

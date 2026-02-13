@@ -6,6 +6,8 @@ import express from "express";
 import movieRoutes from "./routes/movieRoutes.js";
 import authRoutes from "./routes/authRouts.js";
 import watchlistRoutes from "./routes/watchlistRoute.js";
+import reviewRoutes from "./routes/reviewRoutes.js";
+import recommendationRoutes from "./routes/recommendationRoutes.js";
 
 import { config } from "dotenv";
 config();
@@ -19,9 +21,14 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Serve static files for uploads
+app.use('/uploads', express.static('src/uploads'));
+
 app.use("/movies", movieRoutes);
 app.use("/auth", authRoutes);
 app.use("/watchlist", watchlistRoutes);
+app.use("/reviews", reviewRoutes);
+app.use("/recommendations", recommendationRoutes);
 
 const PORT = process.env.PORT || 5001;
 const server = app.listen(PORT, () => {
